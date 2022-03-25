@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:netflix_clone/core/colors/colors.dart';
+import 'package:netflix_clone/presentation/main_page/screen_main_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,21 +15,14 @@ class MyApp extends StatelessWidget {
       title: 'Netflix Clone',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        backgroundColor: backgroundColor,
+        scaffoldBackgroundColor: Colors.black,
+        textTheme: const TextTheme(
+          bodyText1: TextStyle(color: Colors.white),
+          bodyText2: TextStyle(color: Colors.white),
+        ),
       ),
-      home: const HomePage(),
-    );
-  }
-}
-
-class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: Text('Home Page'),
-      ),
+      home: const ScreenMainPage(),
     );
   }
 }
