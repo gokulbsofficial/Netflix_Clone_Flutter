@@ -7,12 +7,12 @@ import 'package:netflix_clone/presentation/new_and_hot/screen_new_and_hot.dart';
 import 'package:netflix_clone/presentation/search/screen_search.dart';
 
 class ScreenMainPage extends StatelessWidget {
-  const ScreenMainPage({Key? key}) : super(key: key);
-  final _pages = const [
-    ScreenHome(),
-    ScreenNewAndHot(),
-    ScreenFastLaugh(),
-    ScreenSearch(),
+  ScreenMainPage({Key? key}) : super(key: key);
+  final _pages = [
+    const ScreenHome(),
+    const ScreenNewAndHot(),
+    const ScreenFastLaugh(),
+    const ScreenSearch(),
     ScreenDownloads()
   ];
   @override
