@@ -13,9 +13,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Netflix Clone',
+      title: 'Netflix',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.transparent,
+        ),
         primarySwatch: Colors.blue,
         backgroundColor: backgroundColor,
         scaffoldBackgroundColor: Colors.black,
