@@ -34,11 +34,14 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_bloc: ^8.0.1
+  freezed_annotation: ^2.0.1
   get_it: ^7.2.0
   google_fonts: ^2.3.1
   injectable: ^1.5.3
+  intl: ^0.17.0
   json_annotation: ^4.4.0
   json_serializable: ^6.1.6
+  share_plus: ^4.0.4
   video_player: ^2.3.0
 
 dev_dependencies:
@@ -46,7 +49,7 @@ dev_dependencies:
   flutter_lints: ^1.0.0
   flutter_test:
     sdk: flutter
-  freezed: ^1.1.1
+  freezed: ^2.0.1
   injectable_generator: ^1.5.3
 
 # For information on the generic Dart part of this file, see the

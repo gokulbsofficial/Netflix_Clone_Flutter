@@ -5,8 +5,19 @@ import 'package:netflix_clone/presentation/home/widget/custom_button_widget.dart
 import 'package:netflix_clone/presentation/widgets/video_widget.dart';
 
 class EveryonesWatchingWidget extends StatelessWidget {
+  final String id;
+  final String imageURL;
+  final String tvOriginalName;
+  final String tvName;
+  final String description;
+
   const EveryonesWatchingWidget({
     Key? key,
+    required this.id,
+    required this.imageURL,
+    required this.tvOriginalName,
+    required this.tvName,
+    required this.description,
   }) : super(key: key);
 
   @override
@@ -17,20 +28,26 @@ class EveryonesWatchingWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           kHeight,
-          const Text(
-            "Friends",
-            style: TextStyle(
+          Text(
+            tvName,
+            style: const TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
             ),
           ),
           kHeight,
-          const Text(
-            "This hit sitcom follows the merry misadventures of six 20-something pais as they navigate the pitfalls of work, life and love in 1990s Manhattan.",
-            style: TextStyle(color: kGreyColor),
+          Text(
+            description,
+            maxLines: 4,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(color: kGreyColor),
           ),
-          kHeight40,
-          const VideoWidget(),
+          description.isNotEmpty
+              ? description.length > 20
+                  ? kHeight20
+                  : kHeight
+              : const SizedBox(),
+          VideoWidget(imageURL: imageURL),
           kHeight,
           Row(
             mainAxisAlignment: MainAxisAlignment.end,

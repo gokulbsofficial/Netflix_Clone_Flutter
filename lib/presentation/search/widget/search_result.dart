@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:netflix_clone/application/search/search_bloc.dart';
 import 'package:netflix_clone/core/constants.dart';
 import 'package:netflix_clone/presentation/search/widget/search_title.dart';
-
-const imageURL =
-    "https://image.tmdb.org/t/p/w440_and_h660_face/wFjboE0aFZNbVOF05fzrka9Fqyx.jpg";
+import 'package:netflix_clone/presentation/widgets/image_area.dart';
 
 class SearchResultWidget extends StatelessWidget {
   const SearchResultWidget({Key? key}) : super(key: key);
@@ -15,35 +15,25 @@ class SearchResultWidget extends StatelessWidget {
         const SearchTextTitle(title: 'Movies & TV'),
         kHeight,
         Expanded(
-          child: GridView.count(
-            shrinkWrap: true,
-            crossAxisCount: 3,
-            mainAxisSpacing: 8,
-            crossAxisSpacing: 8,
-            childAspectRatio: 1 / 1.4,
-            children: List.generate(20, (index) {
-              return const MainCard();
-            }),
-          ),
+          child:
+              BlocBuilder<SearchBloc, SearchState>(builder: (context, state) {
+            return GridView.count(
+              shrinkWrap: true,
+              crossAxisCount: 3,
+              mainAxisSpacing: 8,
+              crossAxisSpacing: 8,
+              childAspectRatio: 1 / 1.4,
+              children: List.generate(state.searchResultList.length, (index) {
+                final movie = state.searchResultList[index];
+                return ImageArea(
+                  imageURL: movie.posterImageURL,
+                  borderRadius: BorderRadius.circular(7),
+                );
+              }),
+            );
+          }),
         )
       ],
-    );
-  }
-}
-
-class MainCard extends StatelessWidget {
-  const MainCard({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        image: const DecorationImage(
-          fit: BoxFit.cover,
-          image: NetworkImage(imageURL),
-        ),
-        borderRadius: BorderRadius.circular(7),
-      ),
     );
   }
 }

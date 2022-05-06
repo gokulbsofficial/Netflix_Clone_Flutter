@@ -6,6 +6,7 @@ import 'package:netflix_clone/application/downloads/downloads_bloc.dart';
 import 'package:netflix_clone/core/colors/colors.dart';
 import 'package:netflix_clone/core/constants.dart';
 import 'package:netflix_clone/core/strings.dart';
+import 'package:netflix_clone/presentation/widgets/image_area.dart';
 
 import '../widgets/app_bar_widget.dart';
 
@@ -89,7 +90,7 @@ class SectionTwo extends StatelessWidget {
                           backgroundColor: Colors.grey.withOpacity(0.5),
                         ),
                         DownloadsImageWidget(
-                          image: state.downloads.isNotEmpty
+                          imageURL: state.downloads.isNotEmpty
                               ? '$kImageBaseURL${state.downloads[1].posterPath}'
                               : "",
                           margin: const EdgeInsets.only(left: 170, top: 49),
@@ -97,7 +98,7 @@ class SectionTwo extends StatelessWidget {
                           size: Size(size.width * 0.35, size.width * 0.54),
                         ),
                         DownloadsImageWidget(
-                          image: state.downloads.isNotEmpty
+                          imageURL: state.downloads.isNotEmpty
                               ? '$kImageBaseURL${state.downloads[2].posterPath}'
                               : "",
                           margin: const EdgeInsets.only(right: 170, top: 49),
@@ -106,7 +107,7 @@ class SectionTwo extends StatelessWidget {
                         ),
                         DownloadsImageWidget(
                           radius: 5,
-                          image: state.downloads.isNotEmpty
+                          imageURL: state.downloads.isNotEmpty
                               ? '$kImageBaseURL${state.downloads[0].posterPath}'
                               : "",
                           margin: const EdgeInsets.only(bottom: 35, top: 50),
@@ -197,7 +198,7 @@ class _SmartDownloads extends StatelessWidget {
 class DownloadsImageWidget extends StatelessWidget {
   const DownloadsImageWidget({
     Key? key,
-    required this.image,
+    required this.imageURL,
     required this.margin,
     required this.size,
     this.angle = 0,
@@ -207,7 +208,7 @@ class DownloadsImageWidget extends StatelessWidget {
   final double angle;
   final double radius;
   final EdgeInsets margin;
-  final String image;
+  final String imageURL;
   final Size size;
 
   @override
@@ -216,19 +217,12 @@ class DownloadsImageWidget extends StatelessWidget {
       padding: margin,
       child: Transform.rotate(
         angle: angle * pi / 180,
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(radius),
-          child: Container(
-            width: size.width,
-            height: size.height,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                fit: BoxFit.cover,
-                image: NetworkImage(
-                  image.isNotEmpty ? image : kNetflixImage,
-                ),
-              ),
-            ),
+        child: SizedBox(
+          width: size.width,
+          height: size.height,
+          child: ImageArea(
+            imageURL: imageURL,
+            borderRadius: BorderRadius.circular(radius),
           ),
         ),
       ),

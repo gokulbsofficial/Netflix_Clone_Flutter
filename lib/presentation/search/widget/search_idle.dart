@@ -1,11 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:netflix_clone/application/search/search_bloc.dart';
 import 'package:netflix_clone/core/colors/colors.dart';
 import 'package:netflix_clone/core/constants.dart';
+import 'package:netflix_clone/core/strings.dart';
 import 'package:netflix_clone/presentation/search/widget/search_title.dart';
-
-const imageURL =
-    "https://image.tmdb.org/t/p/w500_and_h282_face/zQG1FYDqoWo2hYhE5GVZ1yrWSfh.jpg";
+import 'package:netflix_clone/presentation/widgets/image_area.dart';
 
 class SearchIdleWidget extends StatelessWidget {
   const SearchIdleWidget({Key? key}) : super(key: key);
@@ -18,11 +19,41 @@ class SearchIdleWidget extends StatelessWidget {
         const SearchTextTitle(title: 'Top Searches'),
         kHeight,
         Expanded(
-          child: ListView.separated(
-            shrinkWrap: true,
-            itemBuilder: (ctx, index) => const TopSearchItemTile(),
-            separatorBuilder: (ctx, index) => kHeight20,
-            itemCount: 30,
+          child: RefreshIndicator(
+            onRefresh: () async {
+              BlocProvider.of<SearchBloc>(context)
+                  .add(const LoadTopSearch(refresh: true));
+            },
+            child: BlocBuilder<SearchBloc, SearchState>(
+              builder: (context, state) {
+                if (state.isLoading) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else if (state.isError) {
+                  return const Center(
+                    child: Text('Error while getting data'),
+                  );
+                } else if (state.idleList.isEmpty) {
+                  return const Center(
+                    child: Text('List is empty'),
+                  );
+                }
+                return ListView.separated(
+                  shrinkWrap: true,
+                  itemBuilder: (ctx, index) {
+                    final movie = state.idleList[index];
+                    return TopSearchItemTile(
+                      title: movie.title ?? "No title provided",
+                      imageURL: '$kImageBaseURL${movie.backdropPath}',
+                      video: movie.video ?? false,
+                    );
+                  },
+                  separatorBuilder: (ctx, index) => kHeight20,
+                  itemCount: state.idleList.length,
+                );
+              },
+            ),
           ),
         )
       ],
@@ -31,29 +62,38 @@ class SearchIdleWidget extends StatelessWidget {
 }
 
 class TopSearchItemTile extends StatelessWidget {
-  const TopSearchItemTile({Key? key}) : super(key: key);
+  const TopSearchItemTile({
+    Key? key,
+    required this.title,
+    required this.imageURL,
+    this.video = false,
+  }) : super(key: key);
+
+  final String title;
+  final String imageURL;
+  final bool video;
 
   @override
   Widget build(BuildContext context) {
     final _screenWidth = MediaQuery.of(context).size.width;
     return Row(
       children: [
-        Container(
+        SizedBox(
           height: 65,
           width: _screenWidth * 0.35,
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              fit: BoxFit.cover,
-              image: NetworkImage(imageURL),
-            ),
+          child: ImageArea(
+            imageURL: imageURL,
+            borderRadius: BorderRadius.circular(4),
+            iconSize: 26,
+            textSize: 15,
           ),
         ),
-        const Expanded(
+        Expanded(
           child: Padding(
-            padding: EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(8.0),
             child: Text(
-              'Rescued by Ruby',
-              style: TextStyle(
+              title,
+              style: const TextStyle(
                 color: kWhiteColor,
                 fontWeight: FontWeight.bold,
                 fontSize: 16,
@@ -61,15 +101,20 @@ class TopSearchItemTile extends StatelessWidget {
             ),
           ),
         ),
-        const CircleAvatar(
-          backgroundColor: kWhiteColor,
-          radius: 25,
-          child: CircleAvatar(
-            backgroundColor: kBlackColor,
-            radius: 23,
-            child: Icon(
-              CupertinoIcons.play_fill,
-              color: kWhiteColor,
+        GestureDetector(
+          onTap: () {
+            video ? print('Video avilable') : print('Video not available');
+          },
+          child: const CircleAvatar(
+            backgroundColor: kWhiteColor,
+            radius: 25,
+            child: CircleAvatar(
+              backgroundColor: kBlackColor,
+              radius: 23,
+              child: Icon(
+                CupertinoIcons.play_fill,
+                color: kWhiteColor,
+              ),
             ),
           ),
         )

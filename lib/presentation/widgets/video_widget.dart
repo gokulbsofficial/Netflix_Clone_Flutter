@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:netflix_clone/core/colors/colors.dart';
-import 'package:netflix_clone/core/constants.dart';
+import 'package:netflix_clone/presentation/widgets/image_area.dart';
 
 class VideoWidget extends StatelessWidget {
   const VideoWidget({
     Key? key,
+    required this.imageURL,
   }) : super(key: key);
+  final String imageURL;
 
   @override
   Widget build(BuildContext context) {
@@ -14,9 +16,9 @@ class VideoWidget extends StatelessWidget {
         SizedBox(
           width: double.infinity,
           height: 200,
-          child: Image.network(
-            kNewAndHotImage1,
-            fit: BoxFit.cover,
+          child: ImageArea(
+            imageURL: imageURL,
+            borderRadius: BorderRadius.circular(6),
           ),
         ),
         Positioned(

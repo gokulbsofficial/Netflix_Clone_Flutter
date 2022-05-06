@@ -4,8 +4,12 @@ import 'package:netflix_clone/presentation/home/widget/number_card.dart';
 import 'package:netflix_clone/presentation/widgets/main_title.dart';
 
 class NumberTitleCard extends StatelessWidget {
+  final List<String> tvShowsImageURLs;
+  final String title;
   const NumberTitleCard({
     Key? key,
+    required this.tvShowsImageURLs,
+    required this.title,
   }) : super(key: key);
 
   @override
@@ -13,7 +17,7 @@ class NumberTitleCard extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const MainTitle(title: "Top 10 TV Shows In India Today"),
+        MainTitle(title: title),
         kHeight,
         LimitedBox(
           maxHeight: 200,
@@ -21,7 +25,10 @@ class NumberTitleCard extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             children: List.generate(
               10,
-              (index) => NumberCard(index: index),
+              (index) => NumberCard(
+                index: index,
+                imageURL: tvShowsImageURLs[index],
+              ),
             ),
           ),
         )

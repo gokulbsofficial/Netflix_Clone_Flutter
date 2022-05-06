@@ -5,99 +5,118 @@ import 'package:netflix_clone/presentation/home/widget/custom_button_widget.dart
 import 'package:netflix_clone/presentation/widgets/video_widget.dart';
 
 class ComingSoonWidget extends StatelessWidget {
-  const ComingSoonWidget({Key? key}) : super(key: key);
+  final String id;
+  final String month;
+  final String date;
+  final String imageURL;
+  final String movieName;
+  final String movieOriginalName;
+  final String description;
 
+  const ComingSoonWidget({
+    Key? key,
+    required this.id,
+    required this.month,
+    required this.date,
+    required this.imageURL,
+    required this.movieName,
+    required this.movieOriginalName,
+    required this.description,
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
-    return Padding(
-      padding: const EdgeInsets.only(top: 10),
-      child: Row(
-        children: [
-          SizedBox(
-            width: 50,
-            height: 450,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: const [
-                Text(
-                  "FEB",
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: kGreyColor,
-                  ),
+    return Row(
+      children: [
+        kHeight,
+        SizedBox(
+          width: 50,
+          height: 420,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Text(
+                month.substring(0, 3).toUpperCase(),
+                style: const TextStyle(
+                  fontSize: 16,
+                  color: kGreyColor,
                 ),
-                Text(
-                  "29",
-                  style: TextStyle(
-                    fontSize: 30,
-                    letterSpacing: 3.5,
-                    fontWeight: FontWeight.bold,
-                  ),
-                )
-              ],
-            ),
+              ),
+              Text(
+                date,
+                style: const TextStyle(
+                  fontSize: 30,
+                  letterSpacing: 3.5,
+                  fontWeight: FontWeight.bold,
+                ),
+              )
+            ],
           ),
-          SizedBox(
-            width: size.width - 50,
-            height: 430,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const VideoWidget(),
-                kHeight20,
-                Row(
-                  children: [
-                    const Text(
-                      "TALL GIRL 2",
-                      style: TextStyle(
-                        fontSize: 35,
-                        letterSpacing: -3,
+        ),
+        SizedBox(
+          width: size.width - 50,
+          height: 420,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              VideoWidget(
+                imageURL: imageURL,
+              ),
+              kHeight20,
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      movieName,
+                      maxLines: 1,
+                      overflow: TextOverflow.clip,
+                      style: const TextStyle(
+                        fontSize: 18,
+                        // letterSpacing: -5,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const Spacer(),
-                    Row(
-                      children: const [
-                        CustomButtonWidget(
-                          title: 'Remain me',
-                          icon: Icons.alarm,
-                          iconSize: 20,
-                          textSize: 12,
-                        ),
-                        kWidth,
-                        CustomButtonWidget(
-                          title: 'Info',
-                          icon: Icons.info,
-                          iconSize: 20,
-                          textSize: 12,
-                        ),
-                        kWidth20,
-                      ],
-                    )
-                  ],
-                ),
-                kHeight5,
-                const Text("Coming on Friday"),
-                kHeight,
-                const Text(
-                  "Tall Girl 2",
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
                   ),
+                  const CustomButtonWidget(
+                    title: 'Remain me',
+                    icon: Icons.alarm,
+                    iconSize: 20,
+                    textSize: 12,
+                  ),
+                  kWidth,
+                  const CustomButtonWidget(
+                    title: 'Info',
+                    icon: Icons.info,
+                    iconSize: 20,
+                    textSize: 12,
+                  ),
+                  kWidth20,
+                ],
+              ),
+              kHeight5,
+              Text("Coming on $date $month"),
+              kHeight,
+              Text(
+                movieOriginalName,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
                 ),
-                kHeight,
-                const Text(
-                  "Landing the lead in the school musical is a dream come true for Jodi, until the pressure sends her confidence -- and her relationship -- into a tailspin.",
-                  style: TextStyle(color: kGreyColor),
-                )
-              ],
-            ),
+              ),
+              kHeight,
+              Text(
+                description,
+                maxLines: 4,
+                style: const TextStyle(color: kGreyColor),
+              ),
+              description.length > 20 ? kHeight : kHeight5,
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
